@@ -1,16 +1,39 @@
-# React + Vite
+# UniCart Workspace
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Structure
 
-Currently, two official plugins are available:
+- `frontend/` - React + Vite client application
+- `backend/` - Express scraping and wishlist API
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Run
 
-## React Compiler
+Open two terminals:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Backend
+   - `npm run dev:backend`
+2. Frontend
+   - `npm run dev:frontend`
 
-## Expanding the ESLint configuration
+The frontend runs on `http://localhost:5173` and uses Vite proxy to call backend APIs at `/api`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Port Conflict Fix
+
+If backend throws `EADDRINUSE`, it means port `5000` is already used.
+
+- `backend` dev script now auto-clears the port before start.
+- You can also run `npx kill-port 5000` manually.
+
+## Deploy On Render
+
+This repo includes `render.yaml` with:
+
+- `unicart-backend` (Node web service from `backend/`)
+- `unicart-frontend` (static site from `frontend/`)
+
+After creating services on Render:
+
+1. Set backend env var `MONGO_URI`
+2. Copy backend URL (example `https://unicart-backend.onrender.com`)
+3. In frontend service set:
+   - `VITE_API_URL=https://unicart-backend.onrender.com/api`
+4. Redeploy frontend

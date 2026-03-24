@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: unicart-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: MONGO_DB_NAME
+        value: unicart
+      - key: PORT
+        value: 5000
+
+  - type: static_site
+    name: unicart-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishPath: dist
